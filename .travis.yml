@@ -22,8 +22,10 @@ script:
     #- if [ -n "$TRAVIS_TAG" ] && [ -n "$OS" ]; then VERSION=${TRAVIS_TAG:1} packpack/packpack; fi
 
 after_success:
-  - pip install copr-cli simplejson janis2
-  - source $HOME/.bashrc
+  - pip install copr-cli simplejson Jinja2
+  - source ~/.bashrc
+  - env
+  _ echo $SHELL
   - openssl aes-256-cbc -K $encrypted_f965aefb5778_key -iv $encrypted_f965aefb5778_iv -in .copr.enc -out .copr -d
 #  - if [ ! -z "${TRAVIS_TAG}" ]; then copr-cli --config .copr build -r ${OS_DIST}-${OS_VERSION}-${OS_ARCH} ${COPR_REPOSITORY} *.src.rpm; fi
   - copr-cli --config .copr build -r ${OS_DIST}-${DIST}-${OS_ARCH} ${COPR_REPOSITORY} build/*.src.rpm
