@@ -13,8 +13,8 @@ env:
     - OS_ARCH=x86_64
 
 matrix:
-    - OS=centos DIST=7 OS_DIST=epel
-    - OS=centos DIST=6 OS_DIST=epel
+  - OS=centos DIST=7 OS_DIST=epel
+  - OS=centos DIST=6 OS_DIST=epel
 
 install: false
 
