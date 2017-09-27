@@ -19,3 +19,7 @@ script:
     #- if [ -n "$TRAVIS_TAG" ] && [ -n "$OS" ]; then git clone https://github.com/packpack/packpack.git packpack; fi
     #- if [ -n "$TRAVIS_TAG" ] && [ -n "$OS" ]; then VERSION=${TRAVIS_TAG:1} packpack/packpack; fi
 
+after_success:
+  - pip install copr-cli simplejson
+  - openssl aes-256-cbc -K $encrypted_f965aefb5778_key -iv $encrypted_f965aefb5778_iv -in .copr.enc -out .copr -d
+  - if [ ! -z "${TRAVIS_TAG}" ]; then copr-cli --config .copr build -r ${OS_DIST}-${OS_VERSION}-${OS_ARCH} ${COPR_REPOSITORY} *.src.rpm; fi
