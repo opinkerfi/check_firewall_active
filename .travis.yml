@@ -1,45 +1,19 @@
-language: c
-compiler:
-  - clang
-  - gcc
+language: generic
 
 services:
   - docker
 sudo: false
 
-env:
-  - TARGET=test
-  - OS=el DIST=6
-  - OS=el DIST=7
-  - OS=fedora DIST=24
-  - OS=fedora DIST=25
-  - OS=ubuntu DIST=precise
-  - OS=ubuntu DIST=trusty
-  - OS=ubuntu DIST=xenial
-  - OS=ubuntu DIST=yakkety
-  - OS=debian DIST=wheezy
-  - OS=debian DIST=jessie
-  - OS=debian DIST=stretch
+git:
+  submodules: true
 
-matrix:
-  exclude:
-    - env: OS=el DIST=6
-    - env: OS=el DIST=7
-    - env: OS=fedora DIST=24
-    - env: OS=fedora DIST=25
-    - env: OS=ubuntu DIST=precise
-    - env: OS=ubuntu DIST=trusty
-    - env: OS=ubuntu DIST=xenial
-    - env: OS=ubuntu DIST=yakkety
-    - env: OS=ubuntu DIST=zesty
-    - env: OS=debian DIST=wheezy
-    - env: OS=debian DIST=jessie
-    - env: OS=debian DIST=stretch
+env:
+  - OS=centos DIST=6
+  - OS=centos DIST=7
 
 install: false
 
 script:
-  - if [ "$TARGET" == "test" ]; then make -j2 && make clean; fi
-  - if [ -n "$TRAVIS_TAG" ] && [ -n "$OS" ]; then git clone https://github.com/packpack/packpack.git packpack; fi
+#  - if [ -n "$TRAVIS_TAG" ] && [ -n "$OS" ]; then git clone https://github.com/packpack/packpack.git packpack; fi
   - if [ -n "$TRAVIS_TAG" ] && [ -n "$OS" ]; then VERSION=${TRAVIS_TAG:1} packpack/packpack; fi
 
