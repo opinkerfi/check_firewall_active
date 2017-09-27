@@ -8,19 +8,24 @@ git:
   submodules: true
 
 env:
-#  - OS=centos DIST=6
-  - OS=centos DIST=7
+  global:
+    - COPR_REPOSITORY=nagios-plugins
+    - OS_ARCH=x86_64
+
+matrix:
+    - OS=centos DIST=7 OS_DIST=epel
+    - OS=centos DIST=6 OS_DIST=epel
 
 install: false
 
 script:
-  - ls -l
   - ${PWD}/packpack/packpack
     #- if [ -n "$TRAVIS_TAG" ] && [ -n "$OS" ]; then git clone https://github.com/packpack/packpack.git packpack; fi
     #- if [ -n "$TRAVIS_TAG" ] && [ -n "$OS" ]; then VERSION=${TRAVIS_TAG:1} packpack/packpack; fi
 
 after_success:
-  - pip install copr-cli simplejson
+  - pip install copr-cli simplejson janis2
+  - source $HOME/.bashrc
   - openssl aes-256-cbc -K $encrypted_f965aefb5778_key -iv $encrypted_f965aefb5778_iv -in .copr.enc -out .copr -d
 #  - if [ ! -z "${TRAVIS_TAG}" ]; then copr-cli --config .copr build -r ${OS_DIST}-${OS_VERSION}-${OS_ARCH} ${COPR_REPOSITORY} *.src.rpm; fi
-  - copr-cli --config .copr build -r ${OS_DIST}-${OS_VERSION}-${OS_ARCH} ${COPR_REPOSITORY} build/*.src.rpm
+  - copr-cli --config .copr build -r ${OS_DIST}-${DIST}-${OS_ARCH} ${COPR_REPOSITORY} build/*.src.rpm
