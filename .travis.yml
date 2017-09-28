@@ -17,33 +17,35 @@ env:
   global:
     - COPR_REPOSITORY=nagios-plugins
     - OS_ARCH=x86_64
-    - OS=centos DIST=7 OS_DIST=epel
+#    - OS=centos DIST=7 OS_DIST=epel
 #    - OS=centos DIST=6 OS_DIST=epel
+  matrix:
+    - OS=centos DIST=7 OS_DIST=epel
+    - OS=centos DIST=6 OS_DIST=epel
 
 before_install:
   - pip install copr-cli simplejson Jinja2
 
-jobs:
-  include:
-    - stage: centos6
-      env:
-        - OS=centos DIST=6 OS_DIST=epel
-      script:
-        - ${PWD}/packpack/packpack
-    - stage: centos7
-      env:
-        - OS=centos DIST=7 OS_DIST=epel
-      script:
-        - ${PWD}/packpack/packpack
+#jobs:
+#  include:
+#    - stage: centos6
+#      env:
+#        - OS=centos DIST=6 OS_DIST=epel
+#      script:
+#        - ${PWD}/packpack/packpack
+#    - stage: centos7
+#      env:
+#        - OS=centos DIST=7 OS_DIST=epel
+#      script:
+#        - ${PWD}/packpack/packpack
 
 install: false
 
-#script:
-#  - ${PWD}/packpack/packpack
-    #- if [ -n "$TRAVIS_TAG" ] && [ -n "$OS" ]; then git clone https://github.com/packpack/packpack.git packpack; fi
-    #- if [ -n "$TRAVIS_TAG" ] && [ -n "$OS" ]; then VERSION=${TRAVIS_TAG:1} packpack/packpack; fi
+script:
+#- ${PWD}/packpack/packpack
+  - if [ -n "$TRAVIS_TAG" ] && [ -n "$OS" ]; then VERSION=${TRAVIS_TAG:1} ${PWD}/packpack/packpack ; fi
 
 after_success:
   - openssl aes-256-cbc -K $encrypted_b51a7cb6d477_key -iv $encrypted_b51a7cb6d477_iv -in .copr.enc -out .copr -d
-#  - if [ ! -z "${TRAVIS_TAG}" ]; then copr-cli --config .copr build -r ${OS_DIST}-${OS_VERSION}-${OS_ARCH} ${COPR_REPOSITORY} *.src.rpm; fi
-  - copr-cli --config .copr build -r ${OS_DIST}-${DIST}-${OS_ARCH} ${COPR_REPOSITORY} build/*.src.rpm
+  - if [ ! -z "${TRAVIS_TAG}" ]; then copr-cli --config .copr build -r ${OS_DIST}-${OS_VERSION}-${OS_ARCH} ${COPR_REPOSITORY} build/*.src.rpm; fi
+    #  - copr-cli --config .copr build -r ${OS_DIST}-${DIST}-${OS_ARCH} ${COPR_REPOSITORY} build/*.src.rpm
