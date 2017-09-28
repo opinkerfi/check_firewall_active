@@ -14,8 +14,9 @@ env:
     - OS=centos DIST=7 OS_DIST=epel
       # - OS=centos DIST=6 OS_DIST=epel
 
-#before_install:
+before_install:
 #  - openssl aes-256-cbc -K $encrypted_f965aefb5778_key -iv $encrypted_f965aefb5778_iv -in .copr.enc -out .copr -d
+  - pip install copr-cli simplejson Jinja2
 
 install: false
 
@@ -25,12 +26,12 @@ script:
     #- if [ -n "$TRAVIS_TAG" ] && [ -n "$OS" ]; then VERSION=${TRAVIS_TAG:1} packpack/packpack; fi
 
 after_success:
-  - pip install copr-cli simplejson Jinja2
+  #  - pip install copr-cli simplejson Jinja2
   - source ${HOME}/.bashrc
   - source ${HOME}/.bash_profile
   - source ${HOME}/.profile
   - echo $SHELL
   - env
-  - openssl aes-256-cbc -K $encrypted_f965aefb5778_key -iv $encrypted_f965aefb5778_iv -in .copr.enc -out .copr -d
+  - openssl aes-256-cbc -K $encrypted_b51a7cb6d477_key -iv $encrypted_b51a7cb6d477_iv -in .copr.enc -out .copr -d
 #  - if [ ! -z "${TRAVIS_TAG}" ]; then copr-cli --config .copr build -r ${OS_DIST}-${OS_VERSION}-${OS_ARCH} ${COPR_REPOSITORY} *.src.rpm; fi
   - copr-cli --config .copr build -r ${OS_DIST}-${DIST}-${OS_ARCH} ${COPR_REPOSITORY} build/*.src.rpm
