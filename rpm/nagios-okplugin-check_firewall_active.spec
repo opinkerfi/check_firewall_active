@@ -2,7 +2,7 @@
 
 Summary:	A Nagios plugin to check if iptables are actually enforcing rules
 Name:		nagios-okplugin-check_firewall_active
-Version:	1.0.3
+Version:	1.0.4
 Release:	1%{?dist}
 License:	GPLv3+
 Group:		Applications/System
@@ -46,6 +46,8 @@ rm -rf %{buildroot}
 restorecon -v %{_libdir}/nagios/plugins/check_firewall_active.sh /etc/nrpe.d/check_firewall_active.cfg /etc/sudoers.d/check_firewall_active
 
 %changelog
+* Thu Sep 28 2017  Samúel Jón Gunnarsson <samuel@ok.is> 1.0.4-1
+- Moved to seperate repo and new build system
 * Thu Dec 21 2016  Gardar Thorsteinsson <gardart@gmail.com> 1.0.1-1
 * Thu Dec 21 2016  Gardar Thorsteinsson <gardart@gmail.com> 1.0.0-3
 * Thu Dec 20 2016  Richard Allen <ra@ok.is> 0.1-1

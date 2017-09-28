@@ -28,11 +28,10 @@ before_install:
 install: false
 
 script:
-  - ${PWD}/packpack/packpack
-  - env
-#  - if [ -n "$TRAVIS_TAG" ] && [ -n "$OS" ]; then VERSION=${TRAVIS_TAG:1} ${PWD}/packpack/packpack ; fi
+#  - ${PWD}/packpack/packpack
+  - if [ -n "$TRAVIS_TAG" ] && [ -n "$OS" ]; then VERSION=${TRAVIS_TAG:1} ${PWD}/packpack/packpack ; fi
 
 after_success:
   - openssl aes-256-cbc -K $encrypted_b51a7cb6d477_key -iv $encrypted_b51a7cb6d477_iv -in .copr.enc -out .copr -d
-#- if [ ! -z "${TRAVIS_TAG}" ]; then copr-cli --config .copr build -r ${OS_DIST}-${OS_VERSION}-${OS_ARCH} ${COPR_REPOSITORY} build/*.src.rpm; fi
-  - copr-cli --config .copr build --nowait -r ${OS_DIST}-${DIST}-${OS_ARCH} ${COPR_REPOSITORY} build/*.src.rpm
+  - if [ ! -z "${TRAVIS_TAG}" ]; then copr-cli --config .copr build -r ${OS_DIST}-${OS_VERSION}-${OS_ARCH} ${COPR_REPOSITORY} build/*.src.rpm; fi
+#  - copr-cli --config .copr build --nowait -r ${OS_DIST}-${DIST}-${OS_ARCH} ${COPR_REPOSITORY} build/*.src.rpm
